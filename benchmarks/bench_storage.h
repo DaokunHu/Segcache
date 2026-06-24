@@ -32,7 +32,7 @@ static const char *op_names[op_invalid + 1] = {"get", "gets", "set", "add",
 
 
 struct benchmark_entry {
-    char key[MAX_KEY_LEN];
+    char *key;
     char *val;
     uint32_t key_len : 8;
     uint32_t val_len : 24;

@@ -11,7 +11,7 @@
 #include <inttypes.h>
 #include <libpmem.h>
 #include <errno.h>
-
+#include <numa.h>
 #define DATAPOOL_SIGNATURE ("PELIKAN") /* 8 bytes */
 #define DATAPOOL_SIGNATURE_LEN (sizeof(DATAPOOL_SIGNATURE))
 
@@ -188,8 +188,13 @@ datapool_open(const char *path, const char *user_signature, size_t size, int *fr
         pool->is_pmem = 0;
         pool->file_backed = 0;
     } else {
-        pool->addr = pmem_map_file(path, map_size, PMEM_FILE_CREATE, 0600,
-            &pool->mapped_len, &pool->is_pmem);
+        if(eSM==1)
+            pool->addr = pmem_map_file(path, map_size, PMEM_FILE_CREATE, 0600,
+                &pool->mapped_len, &pool->is_pmem);
+        else if(eSM==2){
+            pool->addr=numa_alloc_onnode(map_size,CXL_NODE);
+            pool->is_pmem=1;
+        }
         pool->file_backed = 1;
     }
 

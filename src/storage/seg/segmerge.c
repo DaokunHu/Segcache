@@ -6,7 +6,7 @@
 #include "ttlbucket.h"
 
 #include <cc_mm.h>
-
+#include <libpmem.h>
 #include <sys/types.h>
 
 extern struct seg_evict_info evict_info;
@@ -500,7 +500,8 @@ seg_copy(int32_t seg_id_dest, int32_t seg_id_src,
             /* we will retain this object, first copy the data, then relink in
              * the hashtable */
 #ifdef USE_PMEM
-            pmem_memcpy_nodrain(seg_data_dest + seg_dest->write_offset, curr_src, it_sz);
+            memcpy(seg_data_dest + seg_dest->write_offset, curr_src, it_sz);
+            pmem_persist(seg_data_dest + seg_dest->write_offset, it_sz);
 #else
         memcpy(seg_data_dest + seg_dest->write_offset, curr_src, it_sz);
 #endif

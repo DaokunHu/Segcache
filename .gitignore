@@ -57,3 +57,4 @@ CMAKE_BINARY_DIR
 /target
 benchmarks/config
 *.svg
+/build

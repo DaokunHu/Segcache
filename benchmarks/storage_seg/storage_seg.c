@@ -69,6 +69,7 @@ bench_storage_get(struct benchmark_entry *e)
         ASSERT(memcmp(e->key, item_key(it), e->key_len) == 0);
         ASSERT(memcmp(data, "ABCDEF", MIN(item_nval(it), 6)) == 0);
 #endif
+        memcpy(e->val, item_val(it), it->vlen);
         item_release(it);
     }
 

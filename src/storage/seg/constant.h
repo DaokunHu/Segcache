@@ -50,7 +50,7 @@
 
 
 /* use some PMEM specific functions */
-//#define USE_PMEM
+#define USE_PMEM
 
-//#define USE_THREAD_LOCAL_SEG    1
+#define USE_THREAD_LOCAL_SEG    1
 

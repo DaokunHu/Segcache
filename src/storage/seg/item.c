@@ -84,14 +84,16 @@ _item_define(struct item *it, const struct bstring *key,
     it->is_num = 0;
     it->klen = key->len;
 #ifdef USE_PMEM
-    pmem_memcpy_nodrain(item_key(it), key->data, key->len);
+    memcpy(item_key(it), key->data, key->len);
+    pmem_persist(item_key(it), key->len);
 #else
     cc_memcpy(item_key(it), key->data, key->len);
 #endif
 
     if (val != NULL) {
 #ifdef USE_PMEM
-        pmem_memcpy_nodrain(item_val(it), val->data, val->len);
+        memcpy(item_val(it), val->data, val->len);
+        pmem_persist(item_val(it), val->len);
 #else
         cc_memcpy(item_val(it), val->data, val->len);
 #endif
